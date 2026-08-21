@@ -2470,6 +2470,15 @@
     grid-template-columns: 1fr;
   }
 
+  /* 모바일: 폼이 길어 확인 버튼이 밀리므로 하단에 고정해 항상 보이게 */
+  .reservation-submit {
+    position: sticky;
+    bottom: -24px;
+    z-index: 2;
+    margin-top: 6px;
+    box-shadow: 0 -14px 20px -6px var(--bg-1);
+  }
+
   .header {
     height: 72px;
   }
