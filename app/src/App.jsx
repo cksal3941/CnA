@@ -1247,10 +1247,12 @@ function MergedHero() {
         <div className="mh-bgs" aria-hidden="true">
           <div className="mh-bg mh-bg--video">
             <video
-              src="/videos/hero.mp4"
               poster="/videos/hero-poster.jpg"
               autoPlay muted loop playsInline
-            />
+            >
+              <source src="/videos/hero.webm" type="video/webm" />
+              <source src="/videos/hero.mp4" type="video/mp4" />
+            </video>
           </div>
           <div className="mh-bg"><img src={`${IMGS}section-bg2.jpg`} alt="" loading="eager" fetchPriority="high" /></div>
           <div className="mh-dim" />
