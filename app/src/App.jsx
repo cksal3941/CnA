@@ -18,8 +18,28 @@ import iconTmap from './assets/icon-tmap.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const NAV_LEFT = ['학원소개', '경시대회', '올림피아드']
-const NAV_RIGHT = ['지도실적', '상담안내']
+// Lenis 인스턴스 참조(앵커 스무스 스크롤용) — App에서 주입
+let lenisRef = null
+
+const NAV_LEFT = [
+  { label: '학원소개', href: '#about' },
+  { label: '강사진', href: '#teachers' },
+  { label: '교육과정', href: '#program' },
+]
+const NAV_RIGHT = [
+  { label: '학습단계', href: '#process' },
+  { label: '상담문의', href: '#contact' },
+  { label: '오시는 길', href: '#location' },
+]
+
+// Lenis로 부드럽게 이동 (헤더는 아래로 스크롤 시 자동 숨김이라 오프셋 없이 상단에 딱 맞춤)
+const scrollToHash = (e, href) => {
+  e.preventDefault()
+  const el = document.querySelector(href)
+  if (!el) return
+  if (lenisRef) lenisRef.scrollTo(el, { offset: 0 })
+  else el.scrollIntoView({ behavior: 'smooth' })
+}
 
 // 원본과 동일하게 각 글자를 <span class="char">으로 분리
 function SplitChars({ text }) {
@@ -106,8 +126,8 @@ function Header({ onOpenReservation }) {
               </a>
             </div>
             <div className="nav-center">
-              {[...NAV_LEFT, ...NAV_RIGHT].map((label) => (
-                <a key={label} href="#" className="nav-link">{label}</a>
+              {[...NAV_LEFT, ...NAV_RIGHT].map(({ label, href }) => (
+                <a key={label} href={href} className="nav-link" onClick={(e) => scrollToHash(e, href)}>{label}</a>
               ))}
             </div>
             <div className="nav-right">
@@ -129,8 +149,8 @@ function Header({ onOpenReservation }) {
       </div>
       <div className={`nav-mobile${menuOpen ? ' is-open' : ''}`}>
         <div className="nav-mobile-list">
-          {[...NAV_LEFT, ...NAV_RIGHT].map((label) => (
-            <a key={label} href="#" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>{label}</a>
+          {[...NAV_LEFT, ...NAV_RIGHT].map(({ label, href }) => (
+            <a key={label} href={href} className="nav-mobile-link" onClick={(e) => { scrollToHash(e, href); setMenuOpen(false) }}>{label}</a>
           ))}
           <button
             type="button"
@@ -153,6 +173,10 @@ function Header({ onOpenReservation }) {
 // public 폴더 자산은 배포 base(/CnA/)를 붙여야 함 (루트 절대경로면 base가 빠짐)
 const pub = (p) => import.meta.env.BASE_URL + p.replace(/^\//, '')
 const ICON_BASE = import.meta.env.BASE_URL + 'fq/'
+
+// 상담 예약 폼 전송(Web3Forms) — https://web3forms.com 에서 rnrudgh@gmail.com 로 발급받은 키로 교체
+// (이 키는 클라이언트에 노출돼도 안전: 지정 이메일로만 발송되며 스팸 보호 내장)
+const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY_HERE'
 
 function FloatingMenu() {
   const [snsOpen, setSnsOpen] = useState(false)
@@ -219,7 +243,7 @@ function FloatingMenu() {
 
         {/* TOP */}
         <li className="fq-item">
-          <button type="button" className="fq-circle fq-top" onClick={scrollToTop} aria-label="맨 위로">
+          <button type="button" className="fq-circle fq-top" onClick={scrollToTop} aria-label="맨 위로 TOP">
             TOP
           </button>
         </li>
@@ -293,10 +317,11 @@ const S4_TEACHERS = [
       '그래서 저는 정답을 빠르게 알려주지 않습니다.',
       '스스로 해결의 실마리를 찾도록 돕습니다.',
     ],
-    edu: ['KAIST 전기및전자공학 박사과정'],
+    edu: ['KAIST 전기및전자공학 박사'],
     career: [
       '초·중·고·대학생 수학 지도 경력 12년',
       'KMO · KJMO 등 수학 경시·올림피아드 대비 지도',
+      '일본유학 입시학원 수학 지도 경력',
       '대치동 수리논술 지도 경험',
       '내신·수능 및 심화 수학 지도',
       '수준별 맞춤 커리큘럼 및 오답 관리',
@@ -336,7 +361,7 @@ function Section4() {
   const [active, setActive] = useState(0)
   const t = S4_TEACHERS[active]
   return (
-    <section className="s4">
+    <section id="teachers" className="s4">
       <div
         className="s4-bg"
         aria-hidden="true"
@@ -410,11 +435,11 @@ const CLASS_MODULES = import.meta.glob('./assets/class-0?.webp', { eager: true, 
 const classImg = (n) => CLASS_MODULES[`./assets/${n}.webp`]
 
 const S5DATA = {
-  i1: { img: classImg('class-05'), tit: '초·중·고 내신 수학', desc: '학교별 시험 범위와 출제 경향에 맞춰\n내신 수학을 밀착 관리합니다.' },
-  i2: { img: classImg('class-09'), tit: '초·중등 수학 경시대회', desc: 'HME·KMC 등 전국 수학 경시대회를\n기초부터 실전까지 단계별로 대비합니다.' },
-  i3: { img: classImg('class-06'), tit: '수학 올림피아드 (KMO·KJMO)', desc: '한국수학올림피아드와 주니어수학올림피아드를\n기본기부터 실전까지 체계적으로 대비합니다.' },
-  i4: { img: classImg('class-07'), tit: '고등 수학 심화·선행', desc: '정규 교과를 넘어서는 심화와 선행으로\n상위권 수학의 기반을 다집니다.' },
-  i5: { img: classImg('class-08'), tit: '대입 수리논술', desc: '주요 대학 진학을 위한 수리논술을\n원리 기반으로 지도합니다.' },
+  i1: { img: classImg('class-05'), tit: '영재·심화수학', desc: '초등부터 시작하는 깊이 있는 수학적 사고로\n영재·심화 과정을 지도합니다.' },
+  i2: { img: classImg('class-09'), tit: '수학경시', desc: 'HME·KMC 등 전국 수학경시를\n기초부터 실전까지 단계별로 대비합니다.' },
+  i3: { img: classImg('class-06'), tit: '정보올림피아드', desc: '알고리즘적 사고를 바탕으로\n정보올림피아드를 체계적으로 준비합니다.' },
+  i4: { img: classImg('class-07'), tit: '영재고·과학고 입시', desc: '최상위 수학 역량을 입시 경쟁력으로\n영재고·과학고 입시를 대비합니다.' },
+  i5: { img: classImg('class-08'), tit: '대입수학·수리논술', desc: '고등 최상위 수학부터\n대입 수리논술까지 지도합니다.' },
 }
 
 function S5Text({ tit, desc, layout }) {
@@ -468,7 +493,7 @@ function Section5() {
   }, [])
 
   return (
-    <section className="s5" ref={secRef}>
+    <section id="program" className="s5" ref={secRef}>
       <div className="s5-frame" aria-hidden="true" />
       <div className="s5-container">
         <div className="s5-tophead">
@@ -683,7 +708,7 @@ function Section7() {
   }, [animate])
 
   return (
-    <section className="s7">
+    <section id="process" className="s7">
       <div className="s7-wrapper">
         <div className="s7-left">
           <div className="s7-title-bx">
@@ -718,7 +743,7 @@ function Section7() {
                   <p className="s7-slide-num">{num}</p>
                 </div>
                 <div className="s7-slide-txt">
-                  <h4 className="s7-slide-tit">{tit}</h4>
+                  <h3 className="s7-slide-tit">{tit}</h3>
                   {desc && (
                     <p className="s7-slide-desc">
                       {desc.split('\n').map((l, k) => <span key={k}>{l}<br /></span>)}
@@ -960,6 +985,8 @@ function Footer() {
 // 유지: 학원 소개 문구가 fly-through로 교체 + 문구별 배경 크로스페이드
 function ReservationModal({ open, onClose }) {
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     if (!open) return
@@ -979,12 +1006,33 @@ function ReservationModal({ open, onClose }) {
 
   const handleClose = () => {
     setSubmitted(false)
+    setError('')
     onClose()
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    setSubmitted(true)
+    setError('')
+    setSubmitting(true)
+    const form = event.target
+    const formData = new FormData(form)
+    formData.append('access_key', WEB3FORMS_ACCESS_KEY)
+    formData.append('subject', '[도전과성취] 새 상담 예약 접수')
+    formData.append('from_name', '도전과성취 홈페이지')
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData })
+      const data = await res.json()
+      if (data.success) {
+        setSubmitted(true)
+        form.reset()
+      } else {
+        setError('전송에 실패했습니다. 잠시 후 다시 시도하시거나 전화로 문의해주세요.')
+      }
+    } catch {
+      setError('네트워크 오류로 전송하지 못했습니다. 잠시 후 다시 시도해주세요.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -998,12 +1046,12 @@ function ReservationModal({ open, onClose }) {
         {submitted ? (
           <div className="reservation-complete">
             <p className="reservation-eyebrow">Reservation</p>
-            <h2 id="reservation-title" className="reservation-title">상담 예약 접수가 준비되었습니다.</h2>
+            <h2 id="reservation-title" className="reservation-title">상담 예약이 접수되었습니다.</h2>
             <p className="reservation-desc">
-              입력해주신 내용을 실제 전송 채널에 연결하면 바로 상담 접수로 사용할 수 있습니다.
-              현재는 프론트 화면 확인용 상태입니다.
+              남겨주신 내용이 정상적으로 전송되었습니다.<br />
+              확인 후 순차적으로 연락드리겠습니다.
             </p>
-            <button type="button" className="reservation-submit" onClick={handleClose}>확인</button>
+            <button type="button" className="reservation-submit reservation-done" onClick={handleClose}>확인</button>
           </div>
         ) : (
           <>
@@ -1015,6 +1063,7 @@ function ReservationModal({ open, onClose }) {
               </p>
             </div>
             <form className="reservation-form" onSubmit={handleSubmit}>
+              <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" style={{ display: 'none' }} aria-hidden="true" />
               <label className="reservation-field">
                 <span>학생 이름</span>
                 <input name="studentName" type="text" placeholder="예: 김도전" required />
@@ -1027,9 +1076,24 @@ function ReservationModal({ open, onClose }) {
                 <span>학년</span>
                 <select name="grade" defaultValue="" required>
                   <option value="" disabled>선택해주세요</option>
-                  <option>초등</option>
-                  <option>중등</option>
-                  <option>고등</option>
+                  <optgroup label="── 초등 ──">
+                    <option>초등 1학년</option>
+                    <option>초등 2학년</option>
+                    <option>초등 3학년</option>
+                    <option>초등 4학년</option>
+                    <option>초등 5학년</option>
+                    <option>초등 6학년</option>
+                  </optgroup>
+                  <optgroup label="── 중등 ──">
+                    <option>중등 1학년</option>
+                    <option>중등 2학년</option>
+                    <option>중등 3학년</option>
+                  </optgroup>
+                  <optgroup label="── 고등 ──">
+                    <option>고등 1학년</option>
+                    <option>고등 2학년</option>
+                    <option>고등 3학년</option>
+                  </optgroup>
                   <option>기타</option>
                 </select>
               </label>
@@ -1037,21 +1101,42 @@ function ReservationModal({ open, onClose }) {
                 <span>관심 과정</span>
                 <select name="program" defaultValue="" required>
                   <option value="" disabled>선택해주세요</option>
-                  <option>수학·과학 경시대회</option>
-                  <option>수학 올림피아드</option>
-                  <option>물리/화학 올림피아드</option>
-                  <option>영재고/과학고 입시</option>
-                  <option>상위권 대입 컨설팅</option>
+                  <option>영재·심화수학</option>
+                  <option>내신 수학</option>
+                  <option>수학경시</option>
+                  <option>정보올림피아드</option>
+                  <option>국제학교 수학</option>
+                  <option>영재고·과학고 입시</option>
+                  <option>고등 최상위·수능수학</option>
+                  <option>대입 수리논술</option>
+                  <option>상담 후 결정</option>
+                </select>
+              </label>
+              <label className="reservation-field">
+                <span>상담 희망 일자</span>
+                <input name="preferredDate" type="date" />
+              </label>
+              <label className="reservation-field">
+                <span>연락 가능 시간</span>
+                <select name="contactTime" defaultValue="">
+                  <option value="" disabled>선택해주세요</option>
+                  <option>오전 (09:00~12:00)</option>
+                  <option>오후 (12:00~18:00)</option>
+                  <option>저녁 (18:00~22:00)</option>
+                  <option>시간 무관</option>
                 </select>
               </label>
               <label className="reservation-field reservation-field--full">
                 <span>상담 내용</span>
-                <textarea name="message" rows="4" placeholder="현재 학습 상황, 목표, 희망 상담 시간을 남겨주세요." />
+                <textarea name="message" rows="3" placeholder="현재 학습 상황과 목표를 남겨주세요." />
               </label>
               <p className="reservation-note">
-                제출 기능은 추후 카카오 상담, 이메일, 데이터베이스 중 선택한 방식으로 연결할 수 있습니다.
+                남겨주신 내용은 학원 상담 담당자 이메일로 바로 전달됩니다.
               </p>
-              <button type="submit" className="reservation-submit">상담 예약 남기기</button>
+              {error && <p className="reservation-error">{error}</p>}
+              <button type="submit" className="reservation-submit" disabled={submitting}>
+                {submitting ? '전송 중…' : '상담 예약 남기기'}
+              </button>
             </form>
           </>
         )}
@@ -1131,7 +1216,7 @@ function MergedHero() {
       scrollTrigger: {
         trigger: pin,
         start: 'top top',
-        end: '+=1650',
+        end: '+=2300',
         scrub: 0.8,
         pin: true,
         anticipatePin: 1,
@@ -1139,19 +1224,23 @@ function MergedHero() {
     })
 
     // 스크롤 힌트: 시작과 함께 사라짐
-    tl.to(scrollHint, { opacity: 0, duration: 4 }, 0)
+    tl.to(scrollHint, { opacity: 0, duration: 3 }, 0)
 
-    // 인트로 헤드라인 → 위로 퇴장 (로고 포함)
-    tl.to(slides[0], { y: -150, opacity: 0, duration: 10 }, 4)
+    // 인트로 헤드라인 → 위로 완전히 퇴장 (로고 포함)
+    tl.to(slides[0], { y: -150, opacity: 0, duration: 8 }, 3) // 3→11
 
-    // 문구 1 fly-through (아래→중앙→위)
-    tl.to(slides[1], { y: 0, opacity: 1, duration: 10 }, 12)
-      .to(slides[1], { y: -150, opacity: 0, duration: 10 }, 30)
+    // 문구 1: 인트로가 완전히 사라진 뒤 등장 → 유지 → 퇴장
+    tl.to(slides[1], { y: 0, opacity: 1, duration: 8 }, 12)     // 12→20
+      .to(slides[1], { y: -150, opacity: 0, duration: 8 }, 27)  // 27→35
+
+    // 문구 2: 문구1이 완전히 사라진 뒤 등장 → 유지 → 퇴장
+    tl.to(slides[2], { y: 0, opacity: 1, duration: 8 }, 37)     // 37→45
+      .to(slides[2], { y: -150, opacity: 0, duration: 8 }, 52)  // 52→60
 
     // 배경 전환 없이 배경 영상만 유지 (bg2 크로스페이드 제거)
 
-    // 문구1 퇴장 후 잠깐 유지한 뒤 핀 해제
-    tl.to({}, { duration: 2 }, 44)
+    // 마지막 문구 퇴장 후 잠깐 유지한 뒤 핀 해제
+    tl.to({}, { duration: 2 }, 62)
 
     return () => {
       intro.kill()
@@ -1201,8 +1290,12 @@ function MergedHero() {
 
           {/* 문구 1 */}
           <div className="mh-slide">
-            <p className="mh-label">Why CHALLENGE &amp; ACHIEVEMENT</p>
-            <p className="mh-lead">스스로 도전하고, 성취하다</p>
+            <p className="mh-lead">학생의 다음 도전을 설계하는<br />최상위 수학 전문교육</p>
+          </div>
+
+          {/* 문구 2 */}
+          <div className="mh-slide">
+            <p className="mh-lead">학생의 가능성을 끝까지 끌어올립니다</p>
           </div>
 
         </div>
@@ -1236,7 +1329,7 @@ function Section2() {
   }, [])
 
   return (
-    <section className="s3" ref={secRef}>
+    <section id="about" className="s3" ref={secRef}>
       <div className="s3-container">
         <div className="s3-title-bx">
           <p className="s3-cate">Learning Begins with Challenge</p>
@@ -1258,8 +1351,8 @@ function Section2() {
           <div className="s3-right">
             <ul className="s3-count-list">
               <li>
-                <p className="s3-point-title">경시·올림피아드 전문</p>
-                <p className="s3-count-desc">대회 준비부터 실전까지 함께합니다.</p>
+                <p className="s3-point-title">초등부터 대입까지 이어지는 수학</p>
+                <p className="s3-count-desc">학생의 수준과 목표에 따라 다음 단계를 설계합니다.</p>
               </li>
               <li>
                 <p className="s3-point-title">소수정예 정원</p>
@@ -1279,7 +1372,7 @@ function Section2() {
 
 const FAQ_DATA = [
   { q: '레벨 진단 테스트는 어떻게 진행되나요?', a: '현재 실력과 사고 과정을 함께 점검하는 1:1 진단으로 진행됩니다. 결과를 바탕으로 학생별 목표와 학습 방향을 함께 설계합니다.' },
-  { q: '어떤 과목과 과정을 지도하나요?', a: '수학을 중심으로 내신, 전국 경시대회, 올림피아드(KMO·KJMO), 대입 수리논술까지 단계별로 지도합니다.' },
+  { q: '어떤 과목과 과정을 지도하나요?', a: '영재·심화수학부터 수학경시, 정보올림피아드, 국제학교 수학, 영재고·과학고 입시, 고등 최상위 수학과 대입 수리논술까지 학생의 단계와 목표에 맞춰 지도합니다.' },
   { q: '수업은 개별 지도인가요, 그룹 수업인가요?', a: '학생의 수준과 목표에 맞춰 맞춤 커리큘럼으로 운영되며, 막히는 문제는 언제든 1:1로 질문하고 스스로 해결하도록 돕습니다.' },
   { q: '학부모와의 소통은 어떻게 이루어지나요?', a: '학습 상황과 성장 과정을 정기적으로 점검해 리포트로 공유하고, 정기 상담을 통해 학부모와 긴밀하게 소통합니다.' },
   { q: '수업 시간과 등록 절차가 궁금합니다.', a: '상담 예약 후 레벨 진단 → 커리큘럼 설계 → 등록 순으로 진행됩니다. 자세한 시간표와 일정은 상담 시 안내해 드립니다.' },
@@ -1355,6 +1448,7 @@ export default function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     })
+    lenisRef = lenis
     // Lenis 스크롤에 맞춰 ScrollTrigger 갱신
     lenis.on('scroll', ScrollTrigger.update)
     const raf = (time) => lenis.raf(time * 1000)
@@ -1363,6 +1457,7 @@ export default function App() {
     return () => {
       gsap.ticker.remove(raf)
       lenis.destroy()
+      lenisRef = null
     }
   }, [])
 
