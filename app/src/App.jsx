@@ -734,108 +734,6 @@ function Section7() {
   )
 }
 
-const S8_STEPS = [
-  { num: '01', tit: ['진단 & 목표 설정'], desc: ['레벨 테스트로 현재 위치를 정확히 진단하고 목표를 세웁니다.'] },
-  { num: '02', tit: ['개념 · 원리 정리'], desc: ['수학·물리·화학의 개념과 원리를 근본부터 다집니다.'] },
-  { num: '03', tit: ['실전 문제 해결'], desc: ['스스로 문제를 분석하고 해결하는 훈련을 반복합니다.'] },
-  { num: '04', tit: ['오답 분석 & 재도전'], desc: ['틀린 원인을 함께 분석하고 다시 도전해 성취로 연결합니다.'] },
-]
-
-const S8_CARDS = [
-  { index: 1, img: '/images/cards/card1.webp', tit: '1:1 질의응답', desc: ['막히는 문제는 언제든 1:1로 질문하고', '끝까지 스스로 해결하도록 돕습니다.'], alt: '도전과성취 1:1 질의응답' },
-  { index: 2, img: '/images/cards/card2.webp', tit: '정기 학습 리포트', desc: ['성적과 학습 태도를 정기적으로 점검하고', '성장 과정을 데이터로 공유합니다.'], alt: '도전과성취 학습 리포트' },
-  { index: 3, img: '/images/cards/card3.webp', tit: '학부모 정기 상담', desc: ['학생의 학습 상황과 성장 과정을', '학부모와 긴밀하게 공유합니다.'], alt: '도전과성취 학부모 상담' },
-]
-
-// 각 라인을 <br>로 이어 렌더
-function Lines({ items }) {
-  return items.flatMap((line, i) => (i === 0 ? [line] : [<br key={i} />, line]))
-}
-
-function Section8() {
-  const stackRef = useRef(null)
-
-  // 레퍼런스 동작 재현: 각 카드 top이 뷰포트 30% 지점을 지나면 is-visible 부여
-  useEffect(() => {
-    const stack = stackRef.current
-    if (!stack) return
-    const cards = [...stack.querySelectorAll('.s8-card')]
-
-    const update = () => {
-      const triggerY = window.innerHeight * 0.3
-      cards.forEach((card, i) => {
-        if (i === 0) return
-        const top = card.getBoundingClientRect().top
-        card.classList.toggle('is-visible', top <= triggerY)
-      })
-    }
-
-    update()
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
-    return () => {
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
-    }
-  }, [])
-
-  return (
-    <section className="s8">
-      <div className="s8-frame" aria-hidden="true">
-        <span className="s8-line s8-line--right" />
-      </div>
-      <div className="s8-inner">
-        <div className="s8-layout">
-          <div className="s8-left">
-            <div className="s8-left-cont">
-              <div className="s8-title-bx">
-                <p className="s8-cate">Care System</p>
-                <h3 className="s8-tit">혼자 고민하지 않도록,<br />끝까지 함께합니다.</h3>
-              </div>
-              <p className="s8-subdesc">막히는 지점에서 포기하지 않도록<br />도전과성취만의 4단계 학습 관리 시스템을 운영합니다.</p>
-              <ul className="s8-step-list">
-                {S8_STEPS.map(({ num, tit, desc }) => (
-                  <li key={num} className="s8-step-item">
-                    <div className="s8-step-head">
-                      <h4 className="s8-step-tit">
-                        <span className="s8-step-num">{num}</span>
-                        <span className="s8-step-slash" aria-hidden="true">
-                          <img src={pub('/icons/slash.svg')} alt="" />
-                        </span>
-                        <span className="s8-step-txt"><Lines items={tit} /></span>
-                      </h4>
-                    </div>
-                    <p className="s8-step-desc"><Lines items={desc} /></p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="s8-right">
-            <div className="s8-card-stack" ref={stackRef}>
-              {S8_CARDS.map(({ index, img, tit, desc, alt }) => (
-                <article
-                  key={index}
-                  className={`s8-card${index === 1 ? ' is-visible' : ''}`}
-                  data-index={index}
-                >
-                  <div className="s8-card-bg">
-                    <img src={pub(img)} loading="lazy" alt={alt} />
-                  </div>
-                  <div className="s8-card-cont">
-                    <h4 className="s8-card-tit">{tit}</h4>
-                    <p className="s8-card-desc"><Lines items={desc} /></p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 function Section9({ onOpenReservation }) {
   return (
     <section id="contact" className="s9">
@@ -1248,7 +1146,7 @@ function MergedHero() {
   return (
     <section ref={rootRef} className="mh">
       <div className="mh-pin">
-        {/* 배경 크로스페이드 레이어 */}
+        {/* 배경 영상 레이어 */}
         <div className="mh-bgs" aria-hidden="true">
           <div className="mh-bg mh-bg--video">
             <video
@@ -1259,7 +1157,6 @@ function MergedHero() {
               <source src={pub('/videos/hero.mp4')} type="video/mp4" />
             </video>
           </div>
-          <div className="mh-bg"><img src={pub('/images/hero-bg2.webp')} alt="" loading="eager" fetchPriority="high" /></div>
           <div className="mh-dim" />
         </div>
 
@@ -1464,8 +1361,6 @@ export default function App() {
       {/* <SectionRecord /> */}
       <Section6 />
       <Section7 />
-      {/* 숨김(중복): 관리 서비스 카드 — 차별화 약하고 S7 프로세스와 기능 겹침. 되살리려면 주석 해제 */}
-      {/* <Section8 /> */}
       <SectionFAQ onOpenReservation={() => setReservationOpen(true)} />
       <Section9 onOpenReservation={() => setReservationOpen(true)} />
       <div className="bottom-wrap">
