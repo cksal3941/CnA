@@ -794,7 +794,7 @@
   top: 0;
   height: 100vh;
   z-index: 0;
-  background: linear-gradient(rgba(42,33,28,0.5), rgba(42,33,28,0.62)), url('/images/s4-bg.webp') center / cover no-repeat;
+  /* 배경 이미지는 base 경로 처리를 위해 App.jsx에서 인라인 스타일로 지정 */
 }
 .s4-container {
   grid-area: 1 / 1;

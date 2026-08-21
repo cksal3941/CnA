@@ -151,6 +151,8 @@ function Header({ onOpenReservation }) {
 }
 
 const IMGS = 'https://thegardenclinic.co.kr/assets/images/main/'
+// public 폴더 자산은 배포 base(/CnA/)를 붙여야 함 (루트 절대경로면 base가 빠짐)
+const pub = (p) => import.meta.env.BASE_URL + p.replace(/^\//, '')
 const ICON_BASE = '/fq/'
 
 function FloatingMenu() {
@@ -336,7 +338,11 @@ function Section4() {
   const t = S4_TEACHERS[active]
   return (
     <section className="s4">
-      <div className="s4-bg" aria-hidden="true" />
+      <div
+        className="s4-bg"
+        aria-hidden="true"
+        style={{ background: `linear-gradient(rgba(42,33,28,0.5), rgba(42,33,28,0.62)), url(${pub('/images/s4-bg.webp')}) center / cover no-repeat` }}
+      />
       <div className="s4-container">
         <div className="s4-head">
           <p className="s4-cate"><CharReveal text="TEACHERS" /></p>
@@ -364,7 +370,7 @@ function Section4() {
               <div className="s4-profile">
                 {t.photo && (
                   <div className="s4-img-bx">
-                    <img src={t.photo} loading="lazy" alt={`${t.name} 강사`} />
+                    <img src={pub(t.photo)} loading="lazy" alt={`${t.name} 강사`} />
                   </div>
                 )}
                 <div className={`s4-profile-txt${t.photo ? ' has-photo' : ''}`}>
@@ -429,7 +435,7 @@ function S5Image({ img, tit, num, pos }) {
   return (
     <div className={`s5-img s5-img--${pos}`}>
       <div className="s5-img-inner">
-        <img src={img.startsWith('/') ? img : `${IMGS}${img}`} loading="lazy" alt={tit} />
+        <img src={img.startsWith('/') ? pub(img) : `${IMGS}${img}`} loading="lazy" alt={tit} />
       </div>
       {num && <p className="s5-num">{num}</p>}
     </div>
@@ -709,7 +715,7 @@ function Section7() {
             {loopSteps.map(({ num, img, tit, desc }, i) => (
               <div key={i} className="s7-slide">
                 <div className="s7-slide-img">
-                  <img src={img.startsWith('/') ? img : `${IMGS}${img}`} loading="lazy" alt={tit} />
+                  <img src={img.startsWith('/') ? pub(img) : `${IMGS}${img}`} loading="lazy" alt={tit} />
                   <p className="s7-slide-num">{num}</p>
                 </div>
                 <div className="s7-slide-txt">
@@ -835,7 +841,7 @@ function Section9({ onOpenReservation }) {
   return (
     <section id="contact" className="s9">
       <div className="s9-bg" aria-hidden="true">
-        <img src="/images/s9-bg.webp" loading="lazy" alt="" />
+        <img src={pub('/images/s9-bg.webp')} loading="lazy" alt="" />
       </div>
       <div className="s9-container">
         <div className="s9-cont">
@@ -1247,11 +1253,11 @@ function MergedHero() {
         <div className="mh-bgs" aria-hidden="true">
           <div className="mh-bg mh-bg--video">
             <video
-              poster="/videos/hero-poster.jpg"
+              poster={pub('/videos/hero-poster.jpg')}
               autoPlay muted loop playsInline
             >
-              <source src="/videos/hero.webm" type="video/webm" />
-              <source src="/videos/hero.mp4" type="video/mp4" />
+              <source src={pub('/videos/hero.webm')} type="video/webm" />
+              <source src={pub('/videos/hero.mp4')} type="video/mp4" />
             </video>
           </div>
           <div className="mh-bg"><img src={`${IMGS}section-bg2.jpg`} alt="" loading="eager" fetchPriority="high" /></div>
