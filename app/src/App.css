@@ -2457,8 +2457,18 @@
     align-items: flex-end;
   }
 
+  /* 모바일: 햄버거 메뉴처럼 상담폼이 화면 전체를 덮는 풀스크린 */
+  .reservation-modal {
+    padding: 0;
+  }
   .reservation-panel {
-    max-height: calc(100dvh - 24px);
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: 100dvh;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
     padding: 42px 22px 24px;
   }
 
