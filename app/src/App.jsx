@@ -153,7 +153,7 @@ function Header({ onOpenReservation }) {
 const IMGS = 'https://thegardenclinic.co.kr/assets/images/main/'
 // public 폴더 자산은 배포 base(/CnA/)를 붙여야 함 (루트 절대경로면 base가 빠짐)
 const pub = (p) => import.meta.env.BASE_URL + p.replace(/^\//, '')
-const ICON_BASE = '/fq/'
+const ICON_BASE = import.meta.env.BASE_URL + 'fq/'
 
 function FloatingMenu() {
   const [snsOpen, setSnsOpen] = useState(false)
@@ -600,7 +600,7 @@ function Section6() {
           {FEATURES.map(({ icon, tit, desc }) => (
             <li key={tit} className="s6-feature-item">
               <div className="s6-feature-head">
-                <div className="s6-feature-icon"><img src={icon} loading="lazy" alt="" /></div>
+                <div className="s6-feature-icon"><img src={pub(icon)} loading="lazy" alt="" /></div>
                 <h4 className="s6-feature-tit">{tit}</h4>
               </div>
               <p className="s6-feature-desc">{desc}</p>
