@@ -10,7 +10,7 @@ import 'swiper/css/effect-coverflow'
 import './App.css'
 import logoMark from './assets/logo_s-w.png'
 import logoDark from './assets/logo_s.png'
-import s6Bg from './assets/debora-pilati-dOG0z4-gqp0-unsplash.jpg'
+import s6Bg from './assets/debora-pilati-dOG0z4-gqp0-unsplash.webp'
 import iconNaverMap from './assets/icon-naver-map.png'
 import iconKakaoMap from './assets/icon-kakao-map.png'
 import iconGoogleMap from './assets/icon-google-map.png'
@@ -273,7 +273,7 @@ function Section3() {
 // ⚠︎ 예시(임의) 학력·경력 — 실제 정보로 교체 필요
 const S4_TEACHERS = [
   {
-    photo: '/images/s4/gt.png',
+    photo: '/images/s4/gt.webp',
     role: 'Mathematics',
     name: '구경호',
     subject: '수학',
@@ -400,9 +400,9 @@ function Section4() {
   )
 }
 
-// 수업 사진 (src/assets/class-0?.png)
-const CLASS_MODULES = import.meta.glob('./assets/class-0?.png', { eager: true, import: 'default' })
-const classImg = (n) => CLASS_MODULES[`./assets/${n}.png`]
+// 수업 사진 (src/assets/class-0?.webp)
+const CLASS_MODULES = import.meta.glob('./assets/class-0?.webp', { eager: true, import: 'default' })
+const classImg = (n) => CLASS_MODULES[`./assets/${n}.webp`]
 
 const S5DATA = {
   i1: { img: classImg('class-05'), tit: '초·중·고 내신 수학', desc: '학교별 시험 범위와 출제 경향에 맞춰\n내신 수학을 밀착 관리합니다.' },
@@ -550,8 +550,8 @@ function SectionRecord() {
   )
 }
 
-// 로컬 갤러리 이미지 (src/assets/s1.png ~ s6.png) 자동 로드·정렬
-const S6_GALLERY_MODULES = import.meta.glob('./assets/s?.png', { eager: true, import: 'default' })
+// 로컬 갤러리 이미지 (src/assets/s1.webp ~ s6.webp) 자동 로드·정렬
+const S6_GALLERY_MODULES = import.meta.glob('./assets/s?.webp', { eager: true, import: 'default' })
 const S6_GALLERY = Object.keys(S6_GALLERY_MODULES).sort().map((k) => S6_GALLERY_MODULES[k])
 
 function Section6() {
@@ -835,7 +835,7 @@ function Section9({ onOpenReservation }) {
   return (
     <section id="contact" className="s9">
       <div className="s9-bg" aria-hidden="true">
-        <img src="/images/s9-bg.jpg" loading="lazy" alt="" />
+        <img src="/images/s9-bg.webp" loading="lazy" alt="" />
       </div>
       <div className="s9-container">
         <div className="s9-cont">
