@@ -1295,7 +1295,7 @@ function MergedHero() {
 
           {/* 문구 2 */}
           <div className="mh-slide">
-            <p className="mh-lead">학생의 가능성을 끝까지 끌어올립니다</p>
+            <p className="mh-lead">학생의 가능성을<br />끝까지 끌어올립니다</p>
           </div>
 
         </div>

@@ -512,11 +512,11 @@
 
 .mh-lead {
   font-family: 'Poppins', sans-serif;
-  font-size: 54px;
+  font-size: 46px;
   font-weight: 500;
   color: #fff;
   letter-spacing: 0.02em;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .mh-phrase {
@@ -1620,6 +1620,7 @@
 .reservation-done {
   margin-top: 28px;
   min-width: 140px;
+  align-self: center;
 }
 
 @media (max-width: 1280px) {
@@ -2141,7 +2142,7 @@
   }
 
   .mh-lead {
-    font-size: clamp(34px, 7vw, 48px);
+    font-size: clamp(28px, 5.4vw, 40px);
   }
 
   .mh-phrase {
@@ -2492,11 +2493,11 @@
     grid-template-columns: 1fr;
   }
 
-  /* 모바일: 폼이 길어 버튼이 밀리므로 하단에 불투명 바로 고정(내용은 뒤로 안 비침) */
+  /* 모바일: 폼이 길어 제출 버튼이 밀리므로 하단에 불투명 바로 고정(완료 화면 버튼은 제외) */
   .reservation-form {
     padding-bottom: 6px;
   }
-  .reservation-submit {
+  .reservation-form .reservation-submit {
     position: sticky;
     bottom: -24px;
     z-index: 2;
@@ -2573,7 +2574,7 @@
   }
 
   .mh-lead {
-    font-size: clamp(28px, 8vw, 36px);
+    font-size: clamp(22px, 6vw, 28px);
   }
 
   .mh-phrase {
@@ -2641,7 +2642,7 @@
   .s9-tit,
   .s10-tit,
   .srec-tit {
-    font-size: clamp(30px, 8vw, 38px);
+    font-size: clamp(22px, 6.6vw, 38px);
     letter-spacing: -0.04em;
   }
 
@@ -2651,8 +2652,8 @@
 
   .s3-point-txt p {
     text-align: left;
-    font-size: clamp(19px, 5.2vw, 24px);
-    line-height: 1.55;
+    font-size: clamp(15px, 4.4vw, 22px);
+    line-height: 1.6;
   }
 
   .s3-point-title {
@@ -2744,7 +2745,7 @@
 
   /* 모바일: 강사 소개 글자 크기 축소 */
   .s4-t-tit {
-    font-size: 28px;
+    font-size: clamp(20px, 5.5vw, 24px);
     letter-spacing: -0.04em;
   }
 
@@ -2761,6 +2762,28 @@
   .s4-tab {
     font-size: 15px;
     padding-bottom: 12px;
+  }
+
+  /* 모바일 여백 축소: 섹션 flex gap 축소 + 여분 margin 제거(제목 아래·탭 아래) */
+  .s4-container {
+    gap: 28px;
+  }
+  .s4-head {
+    margin-bottom: 0;
+  }
+  .s4-tabs {
+    margin: 0;
+    gap: 32px;
+  }
+  .s4-row {
+    gap: 34px;
+    margin-bottom: 56px;
+  }
+  /* 강사 사진: 조금 줄이고 아래 여백 복구(@900의 margin:0 auto가 여백을 없앰) */
+  .s4-img-bx {
+    width: 228px;
+    max-width: 228px;
+    margin: 0 auto 24px;
   }
 
   .s4-quote-bx {
