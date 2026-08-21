@@ -1083,8 +1083,26 @@ function MergedHero() {
     const descChars = $('.mh-desc .char')
     const scrollHint = one('.mh-scroll')
     const slides = $('.mh-slide')   // [intro, p1, p2, p3, p4]
-    const bgs = $('.mh-bg')         // [video, bg2, bg3, bg4]
+    const bgs = $('.mh-bg')         // [video]
     const pin = one('.mh-pin')
+
+    // ── 모바일 배경 영상 자동재생 보강 ──
+    // muted+playsInline이면 대부분 자동재생되지만, iOS 저전력 모드 등에서 막힐 수 있어
+    // 첫 사용자 상호작용(터치/클릭/스크롤) 시 재생을 한 번 더 시도한다.
+    const heroVideo = one('.mh-bg--video video')
+    const tryPlayVideo = () => { heroVideo?.play?.().catch(() => {}) }
+    const onFirstInteract = () => {
+      tryPlayVideo()
+      window.removeEventListener('touchstart', onFirstInteract)
+      window.removeEventListener('click', onFirstInteract)
+      window.removeEventListener('scroll', onFirstInteract)
+    }
+    if (heroVideo) {
+      tryPlayVideo()
+      window.addEventListener('touchstart', onFirstInteract, { passive: true })
+      window.addEventListener('click', onFirstInteract)
+      window.addEventListener('scroll', onFirstInteract, { passive: true })
+    }
 
     // ── 초기 상태 ──
     gsap.set(mark, { opacity: 0 })
@@ -1139,6 +1157,9 @@ function MergedHero() {
       intro.kill()
       tl.scrollTrigger?.kill()
       tl.kill()
+      window.removeEventListener('touchstart', onFirstInteract)
+      window.removeEventListener('click', onFirstInteract)
+      window.removeEventListener('scroll', onFirstInteract)
       if (prevRestoration !== null) window.history.scrollRestoration = prevRestoration
     }
   }, [])
