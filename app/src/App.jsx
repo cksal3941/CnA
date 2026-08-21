@@ -150,7 +150,6 @@ function Header({ onOpenReservation }) {
   )
 }
 
-const IMGS = 'https://thegardenclinic.co.kr/assets/images/main/'
 // public 폴더 자산은 배포 base(/CnA/)를 붙여야 함 (루트 절대경로면 base가 빠짐)
 const pub = (p) => import.meta.env.BASE_URL + p.replace(/^\//, '')
 const ICON_BASE = import.meta.env.BASE_URL + 'fq/'
@@ -387,7 +386,7 @@ function Section4() {
                 {t.desc.map((l, j) => <span key={j}>{l}<br /></span>)}
               </p>
               <div className="s4-t-quote-bx">
-                <img src={`${IMGS}line-quote.svg`} loading="lazy" alt="" className="s4-t-quote-icon" />
+                <img src={pub('/icons/quote.svg')} loading="lazy" alt="" className="s4-t-quote-icon" />
                 <p className="s4-t-quote">
                   {t.quote.map((l, j) => <span key={j}>{l}<br /></span>)}
                 </p>
@@ -435,7 +434,7 @@ function S5Image({ img, tit, num, pos }) {
   return (
     <div className={`s5-img s5-img--${pos}`}>
       <div className="s5-img-inner">
-        <img src={img.startsWith('/') ? pub(img) : `${IMGS}${img}`} loading="lazy" alt={tit} />
+        <img src={img} loading="lazy" alt={tit} />
       </div>
       {num && <p className="s5-num">{num}</p>}
     </div>
@@ -715,7 +714,7 @@ function Section7() {
             {loopSteps.map(({ num, img, tit, desc }, i) => (
               <div key={i} className="s7-slide">
                 <div className="s7-slide-img">
-                  <img src={img.startsWith('/') ? pub(img) : `${IMGS}${img}`} loading="lazy" alt={tit} />
+                  <img src={img} loading="lazy" alt={tit} />
                   <p className="s7-slide-num">{num}</p>
                 </div>
                 <div className="s7-slide-txt">
@@ -743,9 +742,9 @@ const S8_STEPS = [
 ]
 
 const S8_CARDS = [
-  { index: 1, img: 'main8-card1.jpg', tit: '1:1 질의응답', desc: ['막히는 문제는 언제든 1:1로 질문하고', '끝까지 스스로 해결하도록 돕습니다.'], alt: '도전과성취 1:1 질의응답' },
-  { index: 2, img: 'main8-card2.jpg', tit: '정기 학습 리포트', desc: ['성적과 학습 태도를 정기적으로 점검하고', '성장 과정을 데이터로 공유합니다.'], alt: '도전과성취 학습 리포트' },
-  { index: 3, img: 'main8-card3.jpg', tit: '학부모 정기 상담', desc: ['학생의 학습 상황과 성장 과정을', '학부모와 긴밀하게 공유합니다.'], alt: '도전과성취 학부모 상담' },
+  { index: 1, img: '/images/cards/card1.webp', tit: '1:1 질의응답', desc: ['막히는 문제는 언제든 1:1로 질문하고', '끝까지 스스로 해결하도록 돕습니다.'], alt: '도전과성취 1:1 질의응답' },
+  { index: 2, img: '/images/cards/card2.webp', tit: '정기 학습 리포트', desc: ['성적과 학습 태도를 정기적으로 점검하고', '성장 과정을 데이터로 공유합니다.'], alt: '도전과성취 학습 리포트' },
+  { index: 3, img: '/images/cards/card3.webp', tit: '학부모 정기 상담', desc: ['학생의 학습 상황과 성장 과정을', '학부모와 긴밀하게 공유합니다.'], alt: '도전과성취 학부모 상담' },
 ]
 
 // 각 라인을 <br>로 이어 렌더
@@ -801,7 +800,7 @@ function Section8() {
                       <h4 className="s8-step-tit">
                         <span className="s8-step-num">{num}</span>
                         <span className="s8-step-slash" aria-hidden="true">
-                          <img src={`${IMGS}main8-line.png`} alt="" />
+                          <img src={pub('/icons/slash.svg')} alt="" />
                         </span>
                         <span className="s8-step-txt"><Lines items={tit} /></span>
                       </h4>
@@ -821,7 +820,7 @@ function Section8() {
                   data-index={index}
                 >
                   <div className="s8-card-bg">
-                    <img src={`${IMGS}${img}`} loading="lazy" alt={alt} />
+                    <img src={pub(img)} loading="lazy" alt={alt} />
                   </div>
                   <div className="s8-card-cont">
                     <h4 className="s8-card-tit">{tit}</h4>
@@ -852,11 +851,11 @@ function Section9({ onOpenReservation }) {
           <p className="s9-desc">모든 학습 계획은 충분한 상담과 레벨 진단 후, 학생별 목표에 맞게 개별 설계됩니다.</p>
           <div className="s9-btns">
             <button type="button" className="s9-btn s9-btn--kakao" onClick={onOpenReservation}>
-              <img src={`${IMGS}icon-kakao.svg`} alt="" width={25} height={23} />
+              <img src={`${ICON_BASE}icon-kakao.svg`} alt="" width={25} height={23} />
               <span>방문 상담 안내</span>
             </button>
             <a href="#location" className="s9-btn s9-btn--tel">
-              <img src={`${IMGS}icon-phone.svg`} alt="" width={15} height={15} />
+              <img src={`${ICON_BASE}icon-phone.svg`} alt="" width={15} height={15} />
               <span>오시는 길 보기</span>
             </a>
           </div>
@@ -1260,7 +1259,7 @@ function MergedHero() {
               <source src={pub('/videos/hero.mp4')} type="video/mp4" />
             </video>
           </div>
-          <div className="mh-bg"><img src={`${IMGS}section-bg2.jpg`} alt="" loading="eager" fetchPriority="high" /></div>
+          <div className="mh-bg"><img src={pub('/images/hero-bg2.webp')} alt="" loading="eager" fetchPriority="high" /></div>
           <div className="mh-dim" />
         </div>
 
